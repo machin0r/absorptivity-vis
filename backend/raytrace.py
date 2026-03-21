@@ -411,12 +411,11 @@ def run_raytrace(
         ray_results.append(result)
 
     # ── Summary statistics ────────────────────────────────────────────────────
-    n_escaped  = sum(1 for r in ray_results if r.escaped)
     avg_bounces = sum(r.n_bounces for r in ray_results) / max(len(ray_results), 1)
     # Fraction absorbed = mean absorbed_total across all rays
     # (each ray starts with intensity=1, so absorbed_total is already normalised)
     frac_absorbed = sum(r.absorbed_total for r in ray_results) / max(len(ray_results), 1)
-    frac_escaped  = n_escaped / max(len(ray_results), 1)
+    frac_escaped  = 1.0 - frac_absorbed
 
     # ── Serialise ─────────────────────────────────────────────────────────────
     return {
