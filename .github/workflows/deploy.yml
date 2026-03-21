@@ -1,0 +1,41 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker europe-west1-docker.pkg.dev --quiet
+
+      - name: Build Docker image
+        run: |
+          docker build -t europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ml-models/absorptivity-vis:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: |
+          docker push europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ml-models/absorptivity-vis:${{ github.sha }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy absorptivity-vis \
+            --image europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ml-models/absorptivity-vis:${{ github.sha }} \
+            --region europe-west1 \
+            --platform managed \
+            --memory 1Gi \
+            --cpu 1 \
+            --port 8080 \
+            --allow-unauthenticated
