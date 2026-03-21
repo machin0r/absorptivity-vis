@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS custom properties ── */
+:root {
+  --bg-primary:     #FFFFFF;
+  --bg-secondary:   #FAFAF8;
+  --bg-tertiary:    #F5F0EB;
+  --bg-hover:       #EDE8E2;
+
+  --text-primary:   #333333;
+  --text-secondary: #666666;
+  --text-muted:     #999999;
+
+  --accent-primary: #C05030;
+  --accent-glow:    transparent;
+
+  --border-subtle:  #E0D8D0;
+  --border-active:  #C0B8B0;
+}
+
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border-active); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Slider ── */
+.param-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+  background: var(--border-active);
+  position: relative;
+}
+
+.param-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.param-slider::-webkit-slider-thumb:hover,
+.param-slider:active::-webkit-slider-thumb {
+  border-color: var(--accent-primary);
+  transform: scale(1.15);
+}
+
+.param-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--text-primary);
+  cursor: pointer;
+}
+
+.param-slider::-moz-range-track {
+  height: 2px;
+  border-radius: 1px;
+  background: var(--border-active);
+}
+
+/* ── Card ── */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+
+/* ── Monospace numeric readout ── */
+.numeral {
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Stagger animation delays ── */
+.stagger-1 { animation-delay: 0ms; }
+.stagger-2 { animation-delay: 80ms; }
+.stagger-3 { animation-delay: 160ms; }
+.stagger-4 { animation-delay: 240ms; }
+.stagger-5 { animation-delay: 320ms; }
+.stagger-6 { animation-delay: 400ms; }
+
+/* ── Select ── */
+.styled-select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--bg-primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 7px 32px 7px 10px;
+  border-radius: 6px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.styled-select:focus { border-color: var(--accent-primary); }
+.styled-select option { background: var(--bg-primary); }
+
+/* ── Tooltip ── */
+.tooltip-root { position: relative; display: inline-flex; }
+.tooltip-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 12px;
+  width: 220px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  white-space: normal;
+}
+
+/* ── Skeleton loader ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
