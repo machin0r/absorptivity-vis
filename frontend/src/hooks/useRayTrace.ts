@@ -12,7 +12,7 @@ export function useRayTrace(
   params: Parameters,
   material: MaterialKey,
   polarisation: Polarisation,
-  nRays = 10,
+  nRays = 20,
 ): UseRayTraceReturn {
   const [data, setData] = useState<RayTraceResponse | null>(null)
   const [loading, setLoading] = useState(false)

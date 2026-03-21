@@ -56,7 +56,7 @@ class RayTraceRequest(BaseModel):
     d90_um: float = Field(..., gt=0)
     packing_fraction: float = Field(..., ge=0.50, le=0.68)
     layer_thickness_um: float = Field(..., gt=0)
-    n_rays: int = Field(default=10, ge=3, le=20)
+    n_rays: int = Field(default=20, ge=3, le=50)
 
 
 class RaySegmentData(BaseModel):

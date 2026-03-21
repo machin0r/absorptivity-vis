@@ -88,11 +88,12 @@ def pack_particles(
     seed: int = 42,
 ) -> list[Particle]:
     """
-    Generate a 2D random sequential packing of circles within the powder layer
-    (y ∈ [0, layer_thickness_um]).
+    Generate a 2D gravity-settled packing of circles within the powder layer.
 
-    The packing fraction is treated as a 2D area coverage target.  In practice
-    RSA reaches ~54 % so we cap the target and accept what fits.
+    Particles are dropped from above at random x positions and settle onto the
+    substrate floor (y = layer_thickness_um) or onto previously placed particles.
+    Larger particles are placed first to form a stable base.  The result looks
+    like a realistic cross-section of a wiped powder layer.
     """
     rng = np.random.default_rng(seed)
     mean_area = math.pi * (d50_um / 2) ** 2
@@ -100,28 +101,57 @@ def pack_particles(
     n_target = int(min(packing_fraction, 0.52) * scene_area / mean_area)
     n_target = int(n_target * 2.5)
     n_target = max(n_target, 8)
-    n_target = min(n_target, 400)   # cap for performance
+    n_target = min(n_target, 400)
 
-    # Sample a pool of candidate radii (2× target to have extras)
-    radii = _sample_radii(d10_um, d50_um, d90_um, n_target * 2, rng)
+    radii = _sample_radii(d10_um, d50_um, d90_um, n_target * 3, rng)
+    # Place in distribution order (already randomised by _sample_radii)
 
     particles: list[Particle] = []
-    attempts_per = 400
+    gap = 0.3  # small visual gap (µm) so hatching lines don't merge
 
     for r in radii:
         if len(particles) >= n_target:
             break
-        # Ensure the particle fits in the layer with margin
         r = min(r, layer_thickness_um * 0.45, scene_width_um * 0.45)
         if r <= 0:
             continue
-        for _ in range(attempts_per):
+
+        best_x: float | None = None
+        best_y = -math.inf
+
+        # Try many x positions; keep the one that settles deepest (densest packing)
+        for _ in range(80):
             x = rng.uniform(r, scene_width_um - r)
-            y = rng.uniform(r, layer_thickness_um - r)
-            gap = max(1.0, r * 0.05)   # small visual gap between particles
-            if all(math.hypot(x - p.x, y - p.y) >= r + p.r + gap for p in particles):
-                particles.append(Particle(x=x, y=y, r=r))
-                break
+
+            # Gravity: particle falls until it hits substrate or another particle
+            y_settle = layer_thickness_um - r  # substrate floor
+
+            for p in particles:
+                dx_val = x - p.x
+                touch_dist = r + p.r + gap
+                if abs(dx_val) < touch_dist:
+                    # y where falling circle would just touch this particle from above
+                    y_on_p = p.y - math.sqrt(touch_dist ** 2 - dx_val ** 2)
+                    if y_on_p < y_settle:
+                        y_settle = y_on_p
+
+            # Reject if particle protrudes more than 5% above the powder surface
+            y_min = -(layer_thickness_um * 0.05)
+            if y_settle < y_min:
+                continue
+
+            # Verify no overlap (floating-point safety)
+            if any(math.hypot(x - p.x, y_settle - p.y) < r + p.r + gap - 0.05
+                   for p in particles):
+                continue
+
+            # Keep the deepest valid placement
+            if y_settle > best_y:
+                best_y = y_settle
+                best_x = x
+
+        if best_x is not None:
+            particles.append(Particle(x=best_x, y=best_y, r=r))
 
     return particles
 
@@ -303,7 +333,7 @@ def run_raytrace(
     d90_um: float,
     packing_fraction: float,
     layer_thickness_um: float,
-    n_rays: int = 10,
+    n_rays: int = 20,
     spot_diameter_um: float = 80.0,
 ) -> dict:
     """
