@@ -35,7 +35,7 @@ export function drawAnnotations(
   ctx.font = '9px "IBM Plex Sans", sans-serif'
   ctx.textAlign = 'left'
   ctx.fillStyle = PENCIL_LIGHT
-  ctx.fillText('powder surface', surfL.x + 4, surfL.y - 4)
+  ctx.fillText('layer thickness', surfL.x + 4, surfL.y - 4)
   ctx.restore()
 
   // ── Summary stats (top-right) ────────────────────────────────────────────
@@ -45,9 +45,7 @@ export function drawAnnotations(
   ctx.fillStyle = PENCIL_LIGHT
   const stats = [
     `rays: ${summary.ray_count}`,
-    `avg bounces: ${summary.avg_bounces.toFixed(1)}`,
-    `absorbed: ${(summary.fraction_absorbed * 100).toFixed(0)}%`,
-    `escaped: ${(summary.fraction_escaped * 100).toFixed(0)}%`,
+    `avg bounces (2D): ${summary.avg_bounces.toFixed(1)}`,
   ]
   let ty = 16
   for (const line of stats) {

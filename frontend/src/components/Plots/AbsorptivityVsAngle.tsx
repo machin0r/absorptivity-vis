@@ -14,7 +14,7 @@ interface Props {
   loading: boolean
 }
 
-const CSS_HEIGHT = 180
+const CSS_HEIGHT = 240
 const ANGLE_TICKS = [0, 15, 30, 45, 60, 75]
 
 export function AbsorptivityVsAngle({ data, currentAngle, polarisation, loading }: Props) {

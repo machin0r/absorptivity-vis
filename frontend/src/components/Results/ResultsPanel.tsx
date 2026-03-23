@@ -88,6 +88,37 @@ export function ResultsPanel({ data, loading }: Props) {
 
         <Divider />
 
+        {/* ── Amplification factor ───────────────────────────────── */}
+        <div style={{ minWidth: '80px' }}>
+          <Label>Amplification</Label>
+          {isReady ? (
+            <>
+              <div
+                className="numeral"
+                style={{
+                  fontSize:    '24px',
+                  fontWeight:  500,
+                  color:       'var(--text-secondary)',
+                  lineHeight:  1,
+                  marginBottom: '6px',
+                }}
+              >
+                ×{(data.A_powder / Math.max(data.A_surface, 0.001)).toFixed(2)}
+              </div>
+              <p style={{ fontSize: '9px', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                from multiple<br />reflections
+              </p>
+            </>
+          ) : (
+            <div className="flex flex-col gap-1">
+              <Skeleton w={60} h={24} />
+              <Skeleton w={70} h={10} />
+            </div>
+          )}
+        </div>
+
+        <Divider />
+
         {/* ── A_surface ────────────────────────────────────────────── */}
         <div style={{ minWidth: '100px' }}>
           <Label>A_surface</Label>

@@ -123,6 +123,14 @@ A = 1 − R`}</Eq>
               Two-flux radiative transfer through a packed bed of spheres. Derives effective absorptivity
               from single-surface Fresnel reflectance and packing geometry. Optical depth:
             </p>
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.55, marginBottom: '8px' }}>
+              The 2D ray trace above shows the multiple-reflection mechanism qualitatively using specular
+              reflections between a small number of particles. The Gusarov model works differently: it treats
+              the powder bed as a 1D slab with diffuse (Lambertian) scattering and solves for the steady-state
+              radiation field analytically. This captures the statistical effect of many reflections in 3D that
+              a 2D cross-section with 20 rays cannot, which is why the reported A_powder value comes from
+              Gusarov, not the ray trace.
+            </p>
             <Eq>{`τ = 1.5 × η × (t / D50)    [Gusarov & Kruth, 2005]
 
 Inputs: A_surface, η (packing fraction), t (layer thickness), D50
