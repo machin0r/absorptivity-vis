@@ -13,7 +13,7 @@ interface Props {
   loading: boolean
 }
 
-const CSS_HEIGHT = 180
+const CSS_HEIGHT = 240
 
 export function AbsorptivityVsTemp({ data, currentTemp, loading }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
