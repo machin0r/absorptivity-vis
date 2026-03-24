@@ -13,3 +13,4 @@ export const LASER_COLOR     = '#C05030'
 
 // Animation
 export const LERP_DURATION_MS = 300
+export const RAY_PROPAGATION_DURATION_S = 1.5

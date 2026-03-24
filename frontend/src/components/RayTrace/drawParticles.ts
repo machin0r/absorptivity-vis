@@ -2,12 +2,14 @@ import { sketchEllipse, ellipseClipPath } from '../sketch/sketchEllipse'
 import { crosshatch } from '../sketch/crosshatch'
 import { PENCIL_COLOR, POWDER_BED_FILL, STROKE_WIDTH } from '../sketch/constants'
 import type { ParticleData } from '../../types'
+import type { AnimationParams } from './drawRays'
 
 export function drawParticles(
   ctx: CanvasRenderingContext2D,
   particles: ParticleData[],
   toCanvas: (x: number, y: number) => { x: number; y: number },
   scale: number,
+  anim?: AnimationParams,
 ) {
   const maxEnergy = Math.max(...particles.map((p) => p.absorbed_energy), 0.001)
 
@@ -34,7 +36,9 @@ export function drawParticles(
     // 2. Absorbed energy glow (warm radial gradient over particle)
     const normEnergy = p.absorbed_energy / maxEnergy
     if (normEnergy > 0.05) {
-      const alpha = normEnergy * 0.5
+      const breathe = anim ? 0.7 + Math.sin(anim.time * 2 + i * 0.5) * 0.3 : 1
+      const revealFactor = anim ? Math.min(1, anim.propagation * 1.5) : 1
+      const alpha = normEnergy * 0.5 * breathe * revealFactor
       const grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r)
       grad.addColorStop(0, `rgba(220, 100, 40, ${alpha.toFixed(2)})`)
       grad.addColorStop(0.6, `rgba(192, 80, 48, ${(alpha * 0.4).toFixed(2)})`)
