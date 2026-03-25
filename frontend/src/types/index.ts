@@ -133,8 +133,6 @@ export interface RayData {
 export interface RayTraceSummary {
   ray_count: number
   avg_bounces: number
-  fraction_absorbed: number
-  fraction_escaped: number
 }
 
 export interface SceneBounds {

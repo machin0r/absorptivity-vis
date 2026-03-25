@@ -82,8 +82,6 @@ class RayData(BaseModel):
 class RayTraceSummary(BaseModel):
     ray_count: int
     avg_bounces: float
-    fraction_absorbed: float
-    fraction_escaped: float
 
 
 class SceneBounds(BaseModel):
