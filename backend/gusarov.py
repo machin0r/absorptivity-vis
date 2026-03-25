@@ -47,8 +47,6 @@ Assumptions (document in UI):
     distribution but are not used in this scalar model.
 """
 
-from __future__ import annotations
-
 import numpy as np
 
 

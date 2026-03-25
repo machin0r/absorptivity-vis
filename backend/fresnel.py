@@ -15,8 +15,6 @@ A_s = 1 − R_s,  A_p = 1 − R_p
 A_avg = (A_s + A_p) / 2   (unpolarised or circular)
 """
 
-from __future__ import annotations
-
 import numpy as np
 
 
