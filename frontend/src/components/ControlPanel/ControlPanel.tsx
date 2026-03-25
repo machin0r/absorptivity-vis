@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { MaterialKey, Parameters, Polarisation } from '../../types'
 import { LASER_SLIDERS, POWDER_SLIDERS } from './presets'
 import { ParameterSlider } from './ParameterSlider'
@@ -57,10 +58,6 @@ export function ControlPanel({
           />
         ))}
 
-        <PolarisationSelector
-          value={polarisation}
-          onChange={onPolarisationChange}
-        />
       </div>
 
       <div className="border-t border-border-subtle" />
@@ -120,6 +117,59 @@ export function ControlPanel({
         </div>
       </div>
 
+      <div className="border-t border-border-subtle" />
+
+      {/* ── ADVANCED ──────────────────────────────────────────────────────── */}
+      <AdvancedSection
+        polarisation={polarisation}
+        onPolarisationChange={onPolarisationChange}
+      />
+
+    </div>
+  )
+}
+
+function AdvancedSection({
+  polarisation,
+  onPolarisationChange,
+}: {
+  polarisation: Polarisation
+  onPolarisationChange: (pol: Polarisation) => void
+}) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col gap-4 animate-fade-in-up stagger-6" style={{ opacity: 0 }}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center justify-between w-full text-left"
+        aria-expanded={open}
+      >
+        <h3
+          className="font-sans font-semibold text-text-muted uppercase tracking-widest"
+          style={{ fontSize: '10px', letterSpacing: '0.12em' }}
+        >
+          Advanced
+        </h3>
+        <span
+          style={{
+            fontSize: '10px',
+            color: 'var(--text-muted)',
+            transition: 'transform 0.2s ease',
+            display: 'inline-block',
+            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+          }}
+        >
+          ▾
+        </span>
+      </button>
+
+      {open && (
+        <PolarisationSelector
+          value={polarisation}
+          onChange={onPolarisationChange}
+        />
+      )}
     </div>
   )
 }
