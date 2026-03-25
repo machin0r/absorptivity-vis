@@ -24,8 +24,6 @@ Limitations (document these in the UI):
     actual liquid metal optical constants may differ due to structural changes
 """
 
-from __future__ import annotations
-
 import numpy as np
 
 from materials import get_sigma, get_sigma_ref

@@ -19,8 +19,6 @@ Coordinate system:
   "Hit substrate"  = ray exits through y > layer_thickness_um (absorbed by substrate)
 """
 
-from __future__ import annotations
-
 import math
 from dataclasses import dataclass, field
 

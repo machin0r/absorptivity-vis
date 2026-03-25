@@ -16,8 +16,6 @@ surface Fresnel with liquid-phase optical constants. The powder model is NOT
 applied above the liquidus.
 """
 
-from __future__ import annotations
-
 from materials import MATERIALS
 
 # Temperature above liquidus at which keyhole risk is flagged (rough heuristic)
