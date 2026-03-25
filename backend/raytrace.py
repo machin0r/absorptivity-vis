@@ -342,7 +342,7 @@ def run_raytrace(
     dict with keys:
       particles     : list of {x, y, radius, absorbed_energy}
       rays          : list of {segments: [{x0,y0,x1,y1,intensity}], absorbed_total, n_bounces, escaped}
-      summary       : {ray_count, avg_bounces, fraction_absorbed, fraction_escaped}
+      summary       : {ray_count, avg_bounces}
       scene         : {width_um, height_um, powder_top_um, powder_bottom_um}
     """
     # ── Scene geometry ────────────────────────────────────────────────────────
@@ -412,8 +412,6 @@ def run_raytrace(
     avg_bounces = sum(r.n_bounces for r in ray_results) / max(len(ray_results), 1)
     # Fraction absorbed = mean absorbed_total across all rays
     # (each ray starts with intensity=1, so absorbed_total is already normalised)
-    frac_absorbed = sum(r.absorbed_total for r in ray_results) / max(len(ray_results), 1)
-    frac_escaped  = 1.0 - frac_absorbed
 
     # ── Serialise ─────────────────────────────────────────────────────────────
     return {
@@ -436,8 +434,6 @@ def run_raytrace(
         "summary": {
             "ray_count": n_rays,
             "avg_bounces": round(avg_bounces, 2),
-            "fraction_absorbed": round(frac_absorbed, 4),
-            "fraction_escaped": round(frac_escaped, 4),
         },
         "scene": {
             "width_um": scene_width_um,
