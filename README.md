@@ -2,6 +2,7 @@
 
 Interactive visualisation of laser absorptivity in metal powder beds for laser powder bed fusion (L-PBF). Adjust laser, material, and powder parameters with sliders and see how surface and effective powder bed absorptivity respond in real time.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Open-64ffda)](https://absorptivity-vis.machinor.systems/)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688)
 ![React](https://img.shields.io/badge/React-18-61DAFB)
